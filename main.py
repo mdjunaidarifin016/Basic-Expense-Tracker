@@ -12,6 +12,9 @@ def load_expense():
     except json.JSONDecodeError:
         return []
 
+def save_expense(content):
+    with open("expense.json","w") as f:
+        json.dump(content,f)
 
 class Expense:
     def __init__(self,category,price,item):
@@ -22,8 +25,7 @@ class Expense:
         content=load_expense()
 
         content.append({self.category:{"item":self.item,"price":self.price}})
-        with open("expense.json","w")as f:
-            json.dump(content,f)
+        save_expense(content)
         print("expense added succesfully")
 
 def show_all_expense():
@@ -37,7 +39,7 @@ def show_total_spending():
             total+=value.get("price")
     print(f"total spending is {total}")
 
-def show_spending_by_catagory(category):
+def show_spending_by_category(category):
     expense_list=load_expense()
 
     total=0
@@ -57,8 +59,7 @@ def delete_expense():
             new_list.append(expense)
 
     expense_list = new_list
-    with open ("expense.json","w") as f:
-        json.dump(expense_list,f)
+    save_expense(expense_list)
     print("expense deleted successfully")
 
 def highest_spending_category():
@@ -109,7 +110,7 @@ def menu():
             show_total_spending()
         elif(choice==4):
             category=input("enter your category:")
-            show_spending_by_catagory(category)
+            show_spending_by_category(category)
         elif(choice==5):
             delete_expense()
         elif(choice==6):
